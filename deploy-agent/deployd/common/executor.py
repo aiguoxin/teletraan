@@ -189,7 +189,9 @@ class Executor(object):
     def execute_command(self, script):
         try:
             deploy_step = os.getenv('DEPLOY_STEP')
-            if not os.path.exists(self._config.get_script_directory()):
+            script_path = self._config.get_script_directory()
+            log.info('------------script_path='+script_path)
+            if not os.path.exists(script_path):
                 """if the teletraan directory does not exist in the pre stage steps. It
                 means it's a newly added host (never deployed before). Show a warning message
                 and exit. Otherwise, we treat it as an agent failure (nothing to execute)

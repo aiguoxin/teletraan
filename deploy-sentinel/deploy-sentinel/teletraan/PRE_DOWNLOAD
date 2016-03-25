@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set +e
+
+echo Running PRE_DOWNLOAD script.
+# Remove old tmp files
+FILE=/tmp/deploy-sentinel
+if [ ! -d $FILE ]; then
+  echo 'file not found'
+else
+  rm -r $FILE
+fi
+
+# Delete running processes on port 8000
+PORT_NUMBER=8000
+lsof -i tcp:${PORT_NUMBER} | awk 'NR!=1 {print $2}' | xargs kill
+
+exit 0

@@ -623,6 +623,7 @@ class GoalAnalyst {
     }
 
     Set<String> gatherAllEnvIds() {
+        LOG.info("-------------------agents={},reports={},envs={}",agents.keySet(),reports.keySet(),envs.keySet());
         Set<String> envIds = new HashSet<>();
         envIds.addAll(agents.keySet());
         envIds.addAll(reports.keySet());

@@ -16,7 +16,7 @@ server:
         threshold: ALL
         archive: false
         currentLogFilename: /tmp/teletraan/access.log
-        timeZone: UTC
+        timeZone: GMT+8
 
 #
 # Logging settings. refer
@@ -30,7 +30,7 @@ logging:
     "com.pinterest.deployservice": DEBUG
   appenders:
     - type: file
-      timeZone: UTC
+      timeZone: GMT+8
       threshold: DEBUG
       archive: false
       currentLogFilename: /tmp/teletraan/service.log
@@ -48,7 +48,7 @@ db:
   host: localhost
   port: 3306
   userName: root
-  password:
+  password: 123456
 
   # Connection pool size string, in the format of
   # initialSize:maxActive:maxIdle:minIdle.

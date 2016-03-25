@@ -3,9 +3,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#  
-#     http://www.apache.org/licenses/LICENSE-2.0
-#    
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -149,7 +149,7 @@ _HEALTH_TYPE_TO_ICONS = {
 @register.filter("convertTimestamp")
 def convertTimestamp(timestamp):
     # return datetime.fromtimestamp(timestamp / 1000).strftime('%Y-%m-%d %H:%M:%S')
-    temp_time = datetime.fromtimestamp(timestamp / 1000, pytz.timezone('America/Los_Angeles'))
+    temp_time = datetime.fromtimestamp(timestamp / 1000, pytz.timezone('Asia/Shanghai'))
     return temp_time.strftime("%Y-%m-%d %H:%M:%S")
 
 
@@ -648,7 +648,7 @@ def jenkinsIcon(current_status):
 def isInstalling(agentStats):
     agent = agentStats.agent
     if agent['state'] == "PAUSED_BY_USER" or agent['state'] == "PAUSED_BY_SYSTEM" or \
-                    agent['state'] == "DELETE" or agent['state'] == "STOP":
+            agent['state'] == "DELETE" or agent['state'] == "STOP":
         return False
     return agent['deployStage'] != "SERVING_BUILD"
 
@@ -793,7 +793,7 @@ def genSubnetId(value):
 @register.filter("genImageInfo")
 def genImageInfo(value):
     temp_time = datetime.fromtimestamp(value.get("publishDate") / 1000,
-                                       pytz.timezone('America/Los_Angeles'))
+                                       pytz.timezone('Asia/Shanghai'))
     symbol = "X"
     if value.get("qualified"):
         symbol = "V"

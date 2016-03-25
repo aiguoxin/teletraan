@@ -93,19 +93,19 @@
         </a>
     </div>
 </div>
-<div class="panel panel-default">
-    <div class="panel-heading clearfix">
-        <h4 class="panel-title pull-left">Recent Environments</h4>
-    </div>
-    <div id="recentEnvsId">
-    </div>
-</div>
+{#<div class="panel panel-default">#}
+{#    <div class="panel-heading clearfix">#}
+{#        <h4 class="panel-title pull-left">Recent Environments</h4>#}
+{#    </div>#}
+{#    <div id="recentEnvsId">#}
+{#    </div>#}
+{#</div>#}
 
 {% include "environs/new_env_modal.tmpl" %}
 
 <script>
     $(function () {
-        $('#recentEnvsId').load('/envs/recent/');
+{#        $('#recentEnvsId').load('/envs/recent/');#}
 
         $('#newEnvBtnId').click(function () {
             $('#newEnvModalId').modal()

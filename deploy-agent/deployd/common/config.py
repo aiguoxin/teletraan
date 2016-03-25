@@ -148,7 +148,9 @@ class Config(object):
 
     def get_script_directory(self):
         script_dir = '{}/teletraan/'.format(self.get_target())
-        subscript_dir = os.path.join(script_dir, os.environ['ENV_NAME'])
+        subscript_dir = '{}/{}/teletraan/'.format(self.get_target(), os.environ['ENV_NAME'])
+        # subscript_dir = os.path.join(script_dir, os.environ['ENV_NAME'])
+        log.info('------------script_dir='+script_dir+',ENV_NAME='+os.environ['ENV_NAME']+',subscript_dir='+subscript_dir)
         if os.path.exists(subscript_dir):
             return subscript_dir
         else:

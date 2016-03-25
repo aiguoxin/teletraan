@@ -351,6 +351,7 @@ public class PingHandler {
         // Now we have all the relevant envs, reports and agents, let us do some
         // analysis & pick the potential install candidate and uninstall candidate
         GoalAnalyst analyst = new GoalAnalyst(deployDAO, environDAO, hostName, hostId, envs, reports, agents);
+        LOG.info("------------start to analysis agents={}",agents.keySet());
         analyst.analysis();
 
         PingResponseBean response = null;
