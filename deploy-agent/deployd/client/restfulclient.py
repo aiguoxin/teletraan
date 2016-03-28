@@ -27,6 +27,7 @@ class RestfulClient(object):
     def __init__(self, config):
         self.config = config
         self.url_prefix = config.get_restful_service_url()
+        log.info('==============service url_prefix='+self.url_prefix)
         self.url_version = config.get_restful_service_version()
         self.token = config.get_restful_service_token()
         self.default_timeout = 30
@@ -34,6 +35,8 @@ class RestfulClient(object):
     def __call(self, method):
         def api(path, params=None, data=None):
             url = '%s/%s%s' % (self.url_prefix, self.url_version, path)
+            log.info('---------service url='+url)
+
             if self.token:
                 headers = {'Authorization': 'token %s' % self.token, 'Content-type': 'application/json'}
             else:

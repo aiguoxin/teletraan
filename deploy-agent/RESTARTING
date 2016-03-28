@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+echo Running RESTARTING script.
+
+# Start service
+set -m; service jetty restart

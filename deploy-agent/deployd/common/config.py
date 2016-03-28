@@ -134,9 +134,9 @@ class Config(object):
         return int(self.get_var(var_name, default_value))
 
     def get_target(self):
-        target_default_dir = self.get_var("target_default_dir", "/tmp")
+        target_default_dir = self.get_var("target_default_dir", "/Users/liuruixue/Downloads/jetty7/webapps")
         if not (self._configs and self._configs.get('target')):
-            return os.path.join(target_default_dir, os.environ['ENV_NAME'])
+            return os.path.join(target_default_dir, os.environ['ENV_NAME']+".war")
 
         return self._configs.get('target')
 
@@ -157,7 +157,7 @@ class Config(object):
             return script_dir
 
     def get_agent_directory(self):
-        return self.get_var("deploy_agent_dir", "/tmp/deployd/")
+        return self.get_var("deploy_agent_dir", "/data/deployd/")
 
     def get_env_status_fn(self):
         return os.path.join(self.get_agent_directory(), "env_status")
@@ -166,10 +166,10 @@ class Config(object):
         return os.path.join(self.get_agent_directory(), "host_info")
 
     def get_builds_directory(self):
-        return self.get_var("builds_dir", "/tmp/deployd/builds")
+        return self.get_var("builds_dir", "/data/deployd/builds")
 
     def get_log_directory(self):
-        return self.get_var("log_directory", "/tmp/deployd/logs")
+        return self.get_var("log_directory", "/data/deployd/logs")
 
     def get_user_role(self):
         import getpass

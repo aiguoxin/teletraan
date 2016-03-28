@@ -1,3 +1,8 @@
 #!/bin/bash
 
-echo Running POST_DOWNLOAD script.
+set -e
+
+echo Running POSTDOWN script.
+
+# 下载完后，需要先关闭nginx、jetty
+~/Downloads/jetty7/bin/jetty.sh stop

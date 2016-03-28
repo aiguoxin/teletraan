@@ -40,18 +40,19 @@ class Downloader(object):
         return self._matcher.match(url).group('ext')
 
     def download(self):
+        log.error('============================downloading...')
         extension = self._get_extension(self._url.lower())
-        local_fn = u'{}-{}.{}'.format(self._build_name, self._build, extension)
+        local_fn = u'{}_{}.{}'.format(self._build_name, self._build, extension)
         local_full_fn = os.path.join(self._base_dir, local_fn)
         extracted_file = os.path.join(self._base_dir, '{}.extracted'.format(self._build))
         if os.path.exists(extracted_file):
             log.info("{} exists. tarball have already been extracted.".format(extracted_file))
             return Status.SUCCEEDED
 
-        working_dir = os.path.join(self._base_dir, self._build)
-        if not os.path.exists(working_dir):
-            log.info('Create directory {}.'.format(working_dir))
-            os.mkdir(working_dir)
+        # working_dir = os.path.join(self._base_dir, self._build)
+        # if not os.path.exists(working_dir):
+        #     log.info('Create directory {}.'.format(working_dir))
+        #     os.mkdir(working_dir)
 
         downloader = DownloadHelperFactory.gen_downloader(self._url)
         if downloader:
@@ -62,22 +63,26 @@ class Downloader(object):
             return Status.FAILED
 
         curr_working_dir = os.getcwd()
-        os.chdir(working_dir)
+        # os.chdir(working_dir)
+        log.info('------------handling file')
         try:
-            if extension == 'zip':
-                log.info("unzip files to {}".format(working_dir))
-                with zipfile.ZipFile(local_full_fn) as zfile:
-                    zfile.extractall(working_dir)
-            else:
-                log.info("untar files to {}".format(working_dir))
-                with tarfile.open(local_full_fn) as tfile:
-                    tfile.extractall(working_dir)
+            # if extension == 'zip':
+            #     log.info("unzip files to {}".format(working_dir))
+            #     with zipfile.ZipFile(local_full_fn) as zfile:
+            #         zfile.extractall(working_dir)
+            # elif extension == 'tar':
+            #     log.info("untar files to {}".format(working_dir))
+            #     with tarfile.open(local_full_fn) as tfile:
+            #         tfile.extractall(working_dir)
+            # else:
+            #     log.info("cp files to {}".format(working_dir))
+            #     pass
 
             # change the working directory back
             os.chdir(curr_working_dir)
             with file(extracted_file, 'w'):
                 pass
-            log.info("Successfully extracted {} to {}".format(local_full_fn, working_dir))
+                # log.info("Successfully extracted {} to {}".format(local_full_fn, working_dir))
         except tarfile.TarError as e:
             status = Status.FAILED
             log.error("Failed to extract files: {}".format(e.message))

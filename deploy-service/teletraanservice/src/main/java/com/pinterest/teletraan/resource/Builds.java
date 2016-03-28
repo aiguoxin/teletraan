@@ -155,10 +155,12 @@ public class Builds {
         buildBean.setPublisher(sc.getUserPrincipal().getName());
 
         // We append commit SHA after build id to make build directory name human friendly
-        String id = CommonUtils.getBase64UUID();
-        String buildId = String.format("%s_%s", id, buildBean.getScm_commit_7());
-        buildBean.setBuild_id(buildId);
-        
+//        String id = CommonUtils.getBase64UUID();
+//        String buildId = String.format("%s_%s", id, buildBean.getScm_commit_7());
+//        buildBean.setBuild_id(buildId);
+
+        String buildId = buildBean.getBuild_id();
+        LOG.info("------------before inset build to db");
         buildDAO.insert(buildBean);
         LOG.info("Successfully published build {} by {}.", buildId, sc.getUserPrincipal().getName());
 

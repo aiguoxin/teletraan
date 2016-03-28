@@ -3,9 +3,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#  
-#     http://www.apache.org/licenses/LICENSE-2.0
-#    
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,6 +40,7 @@ class Stager(object):
             transformer or Transformer(agent_dir=agent_dir, env_name=env_name)
         self._build = build
         self._target = target
+        self._env_name = env_name
 
     def enable_package(self):
         """Set the enabled build.
@@ -51,9 +52,11 @@ class Stager(object):
             return Status.SUCCEEDED
 
         old_build = self.get_enabled_build()
-        build_dir = os.path.join(self._build_dir, self._build)
+        build_link_target = os.path.join(self._build_dir, self._env_name + ".war")
+        build_target = os.path.join(self._build_dir, self._env_name + "_" + self._build + ".war")
         # Make a tmp_symlink
-        tmp_symlink = "{}_tmp".format(self._target)
+        # tmp_symlink = "{}_tmp".format(self._target)
+        tmp_symlink = self._target
         if os.path.exists(tmp_symlink):
             os.remove(tmp_symlink)
 
@@ -62,15 +65,21 @@ class Stager(object):
             # change the owner of the directory
             uinfo = getpwnam(self._user_role)
             owner = '{}:{}'.format(uinfo.pw_uid, uinfo.pw_gid)
-            commands = ['chown', '-R', owner, build_dir]
+            commands = ['chown', '-R', owner, build_target]
             log.info('Running command: {}'.format(' '.join(commands)))
             output, error, status = Caller().call_and_log(commands)
             if status != 0:
                 log.error(error)
                 return Status.FAILED
 
+            log.info('++++++++++++++++++' + 'build_dir=' + build_link_target)
+            # copy war
+            if os.path.exists(build_link_target):
+                os.remove(build_link_target)
+            shutil.copy(build_target, build_link_target)
+
             # setup symlink
-            os.symlink(build_dir, tmp_symlink)
+            os.symlink(build_link_target, tmp_symlink)
             # Move tmp_symlink over existing symlink.
             os.rename(tmp_symlink, self._target)
             log.info("{} points to {} (previously {})".format(
@@ -88,7 +97,7 @@ class Stager(object):
         """Figure out what build is enabled by looking at symlinks."""
         if not os.path.exists(self._target):
             if (os.path.islink(self._target) and not
-                    os.path.lexists(self._target)):
+            os.path.lexists(self._target)):
                 symlink_target = os.readlink(self._target)
                 log.info("{} points to {} which does not exist".format(
                     self._target, symlink_target))

@@ -24,10 +24,14 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class DBBuildDAOImpl implements BuildDAO {
+    private static final Logger LOG = LoggerFactory.getLogger(DBBuildDAOImpl.class);
+
     private static final String INSERT_BUILD_TEMPLATE =
         "INSERT INTO builds SET %s";
     private static final String DELETE_BUILD =
@@ -80,6 +84,7 @@ public class DBBuildDAOImpl implements BuildDAO {
     public void insert(BuildBean buildBean) throws Exception {
         SetClause setClause = buildBean.genSetClause();
         String clause = String.format(INSERT_BUILD_TEMPLATE, setClause.getClause());
+        LOG.info("-------------------clause={}",clause);
         new QueryRunner(dataSource).update(clause, setClause.getValueArray());
     }
 

@@ -38,6 +38,7 @@ class LocalDownloadHelper(DownloadHelper):
         return error_code
 
     def download(self, local_full_fn):
+        log.info("================go download======================")
         log.info("Start to download from local path {} to {}".format(
             self._url, local_full_fn))
 
