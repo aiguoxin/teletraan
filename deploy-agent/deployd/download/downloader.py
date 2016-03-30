@@ -41,7 +41,8 @@ class Downloader(object):
 
     def download(self):
         log.error('============================downloading...')
-        extension = self._get_extension(self._url.lower())
+        # extension = self._get_extension(self._url.lower())
+        extension = 'war'
         local_fn = u'{}_{}.{}'.format(self._build_name, self._build, extension)
         local_full_fn = os.path.join(self._base_dir, local_fn)
         extracted_file = os.path.join(self._base_dir, '{}.extracted'.format(self._build))
