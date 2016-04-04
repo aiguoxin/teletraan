@@ -40,6 +40,9 @@ public class TeletraanService extends Application<TeletraanServiceConfiguration>
 
         environment.jersey().register(configuration.getAuthenticationFactory().create(context));
 
+        ProxyLog proxyLog = new ProxyLog(context);
+        environment.jersey().register(proxyLog);
+
         Builds builds = new Builds(context);
         environment.jersey().register(builds);
 

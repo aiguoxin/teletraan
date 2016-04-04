@@ -21,6 +21,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -92,5 +93,17 @@ public class CommonUtils {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:SS");
         Date date = formatter.parse(dateString);
         return date.getTime();
+    }
+
+    public static byte[] decode(String str) {
+        byte[] bt = null;
+        try {
+            sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
+            bt = decoder.decodeBuffer(str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bt;
     }
 }

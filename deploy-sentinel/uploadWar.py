@@ -20,6 +20,9 @@ import time
 import string
 import random
 import requests
+import json
+import base64
+import socket
 
 
 """
@@ -33,7 +36,7 @@ def main():
 
     host_info_path = "file://%s/%s" % (os.path.dirname(os.path.realpath(__file__)),
                                        "host_info")
-    #build_dest_dir = '/tmp/quickstart-build.tar.gz'
+    # build_dest_dir = '/tmp/quickstart-build.tar.gz'
     build_dest_dir = '/tmp/views.war'
 
     host_info_dest_dir = '/data/deployd/host_info'
@@ -99,13 +102,13 @@ def gen_random_num(size=8, chars=string.digits):
 
 def publish_local_build(build_path, build_name='views', branch='master', commit=gen_random_num(32)):
     build = {}
-    publish_build_url = "http://localhost:8080/v1/builds"
+    publish_build_url = "http://localhost:8089/v1/builds"
     headers = {'Content-type': 'application/json', 'Authorization': 'kIIoz6LMR_u_kc6sRx2pDg'}
     build['name'] = build_name
     build['repo'] = build_name
     build['branch'] = branch
     build['commit'] = commit
-    build['id'] = "P302"  # 获取jenkins输入TAG
+    build['id'] = "P67"  # 获取jenkins输入TAG
     build['commitDate'] = int(round(time.time() * 1000))  # 时间戳
     build['artifactUrl'] = build_path
     build['publishInfo'] = "http://jenkins_url/view/views/job/views-prod_deploy_all/100/console"
@@ -119,5 +122,37 @@ def publish_local_build(build_path, build_name='views', branch='master', commit=
     return build
 
 
+def byteify(input):
+    if isinstance(input, dict):
+        return {byteify(key): byteify(value) for key, value in input.iteritems()}
+    elif isinstance(input, list):
+        return [byteify(element) for element in input]
+    elif isinstance(input, unicode):
+        return input.encode('utf-8')
+    else:
+        return input
+
+
+def upload_proxy_log():
+    ip = socket.gethostbyname(socket.gethostname())
+    current_time = int(round(time.time() * 1000))
+    f = file("/data/watchmen/proxy_status.json")
+    proxy_json = byteify(json.load(f, "utf-8"))
+    print(proxy_json)
+    proxy_json = (str(proxy_json)).encode("utf-8")
+    proxy_json = base64.b64encode(proxy_json)
+    print(proxy_json)
+    proxyLogVo = {}
+    upload_url = "http://localhost:8089/v1/proxylog"
+    headers = {'Content-type': 'application/json', 'Authorization': 'kIIoz6LMR_u_kc6sRx2pDg'}
+    proxyLogVo['createTime'] = current_time
+    proxyLogVo['ip'] = str(ip)
+    proxyLogVo['proxyJson'] = proxy_json
+    result = requests.post(upload_url, json=proxyLogVo, headers=headers)
+    f.close
+    print(result)
+
+
 if __name__ == "__main__":
-    main_upload()
+    upload_proxy_log()
+    # main_upload()

@@ -35,10 +35,12 @@ import com.pinterest.deployservice.events.EventSender;
 import com.pinterest.deployservice.group.HostGroupManager;
 import com.pinterest.deployservice.scm.SourceControlManager;
 
+import lombok.Data;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import java.util.concurrent.ExecutorService;
 
+@Data
 public class ServiceContext {
     private BasicDataSource dataSource;
     private BuildDAO buildDAO;
@@ -74,6 +76,12 @@ public class ServiceContext {
     private SecurityZoneDAO securityZoneDAO;
     private PlacementDAO placementDAO;
     private SpotAutoScalingDAO spotAutoScalingDAO;
+
+    public ProxyLogDAO getProxyLogDAO() {
+        return proxyLogDAO;
+    }
+
+    private ProxyLogDAO proxyLogDAO;
 
     private String serviceStage;
     private MailManager mailManager;
