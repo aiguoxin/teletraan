@@ -1,0 +1,76 @@
+<div class="row" id="main">
+<input type='hidden' id="xData" value="{{xData}}">
+<input type='hidden' id="yData" value="{{yData}}">
+
+
+</div>
+
+
+<script>
+$("#main").attr("style", "height:300px;");
+
+//
+currentIp = $("#currentIp").val();
+currentProxy = $("#currentProxy").val();
+xData = $.parseJSON($("#xData").val());
+yData = $.parseJSON($("#yData").val());
+
+lineName = "["+currentProxy+"]成功率";
+
+var myChart = echarts.init(document.getElementById('main'));
+
+option = {
+    title: {
+        text: '服务器:'+currentIp,
+        subtext: ''
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data:[lineName]
+    },
+    toolbox: {
+        show: true,
+        feature: {
+            dataZoom: {},
+            dataView: {readOnly: false},
+            magicType: {type: ['line', 'bar']},
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+    xAxis:  {
+        type: 'category',
+        boundaryGap: false,
+        data: xData
+    },
+    yAxis: {
+        type: 'value',
+        axisLabel: {
+            formatter: '{value} %'
+        }
+    },
+    series: [
+        {
+            name:lineName,
+            type:'line',
+            data: yData,
+            markPoint: {
+                data: [
+                    {type: 'max', name: '最大值'},
+                    {type: 'min', name: '最小值'}
+                ]
+            },
+            markLine: {
+                data: [
+                    {type: 'average', name: '平均值'}
+                ]
+            }
+        }
+        ]
+};
+
+myChart.setOption(option);
+
+</script>

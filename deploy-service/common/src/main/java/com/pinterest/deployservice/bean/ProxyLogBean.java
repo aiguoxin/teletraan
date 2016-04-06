@@ -28,31 +28,31 @@ public class ProxyLogBean implements Updatable {
     private int id;
 
     @JsonProperty("proxyName")
-    private String proxyName;
+    private String proxy_name;
 
     @JsonProperty("successCount")
-    private int successCount;
+    private int success_count;
 
     @JsonProperty("errorCount")
-    private int errorCount;
+    private int error_count;
 
     @JsonProperty("qps")
     private int qps;
 
     @JsonProperty("errorRate")
-    private Float errorRate;
+    private Float error_rate;
 
     @JsonProperty("successRate")
-    private Float successRate;
+    private Float success_rate;
 
-    @JsonProperty("slotLeft")
-    private int slotLeft;
+    @JsonProperty("safeModeTimeSlotLeft")
+    private int slot_left;
 
     @JsonProperty("createTime")
-    private Long createTime;
+    private Long create_time;
 
     @JsonProperty("updateTime")
-    private Date updateTime;
+    private Date update_time;
 
     @NotEmpty
     @JsonProperty("ip")
@@ -61,15 +61,15 @@ public class ProxyLogBean implements Updatable {
     @Override
     public SetClause genSetClause() {
         SetClause clause = new SetClause();
-        clause.addColumn("proxy_name", proxyName);
-        clause.addColumn("success_count", successCount);
-        clause.addColumn("error_count", errorCount);
+        clause.addColumn("proxy_name", proxy_name);
+        clause.addColumn("success_count", success_count);
+        clause.addColumn("error_count", error_count);
         clause.addColumn("qps", qps);
-        clause.addColumn("error_rate", errorCount);
-        clause.addColumn("success_rate", successRate);
-        clause.addColumn("slot_left", slotLeft);
-        clause.addColumn("create_time", createTime);
-        clause.addColumn("update_time", updateTime);
+        clause.addColumn("error_rate", error_count);
+        clause.addColumn("success_rate", success_rate);
+        clause.addColumn("slot_left", slot_left);
+        clause.addColumn("create_time", create_time);
+        clause.addColumn("update_time", update_time);
         clause.addColumn("ip", ip);
         return clause;
     }

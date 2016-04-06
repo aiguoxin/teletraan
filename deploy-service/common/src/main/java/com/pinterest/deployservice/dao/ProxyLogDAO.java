@@ -17,9 +17,15 @@ package com.pinterest.deployservice.dao;
 
 import com.pinterest.deployservice.bean.ProxyLogBean;
 
+import java.util.List;
+
 /**
  * A collection of methods to help interact with table BUILDS
  */
 public interface ProxyLogDAO {
     void insert(ProxyLogBean proxyLogBean) throws Exception;
+
+    List<ProxyLogBean> getByNameDateIp(String proxyName, String ip,  long before, long after) throws Exception;
+
+    List<String> getProxyByIp(String ip) throws Exception;
 }

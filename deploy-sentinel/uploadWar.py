@@ -135,7 +135,7 @@ def byteify(input):
 
 def upload_proxy_log():
     ip = socket.gethostbyname(socket.gethostname())
-    current_time = int(round(time.time() * 1000))
+    current_time = int(round(time.time()))
     f = file("/data/watchmen/proxy_status.json")
     proxy_json = byteify(json.load(f, "utf-8"))
     print(proxy_json)

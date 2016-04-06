@@ -3,9 +3,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-#  
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-#    
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,6 +29,7 @@ import util_views
 import security
 import user_views
 import docs_views
+import graph_views
 
 urlpatterns = [
     # deploy related
@@ -181,4 +182,8 @@ urlpatterns = [
     url(r'^auth/$', security.login_authorized),
     url(r'^api-docs/$', docs_views.SwaggerUIView.as_view()),
     url(r'^$', deploy_views.get_landing_page),
-]
+
+    # graph
+    url(r'^graph/$', graph_views.search_page),
+    url(r'^graph/proxy$', graph_views.get_proxy),
+    ]

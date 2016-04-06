@@ -5,15 +5,16 @@ package com.pinterest.teletraan.resource;
  * aiguoxin
  * 说明:
  */
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.pinterest.deployservice.bean.BuildBean;
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pinterest.deployservice.bean.ProxyLogBean;
 import com.pinterest.deployservice.common.CommonUtils;
-import com.pinterest.deployservice.dao.BuildDAO;
 import com.pinterest.deployservice.dao.ProxyLogDAO;
 import com.pinterest.deployservice.scm.SourceControlManager;
 import com.pinterest.teletraan.TeletraanServiceContext;
+import com.pinterest.teletraan.exception.TeletaanInternalException;
 import com.pinterest.teletraan.security.Authorizer;
 import com.pinterest.teletraan.vo.ProxyLogVo;
 import io.swagger.annotations.*;
@@ -24,13 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.net.URI;
-import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Path("/v1/proxylog")
@@ -45,7 +42,6 @@ import java.util.Map;
 public class ProxyLog {
     private static final Logger LOG = LoggerFactory.getLogger(ProxyLog.class);
     private ProxyLogDAO proxyLogDAO;
-    private BuildDAO buildDAO;
     private SourceControlManager sourceControlManager;
     private final Authorizer authorizer;
 
@@ -72,16 +68,53 @@ public class ProxyLog {
         String ip = proxyLogVo.getIp();
         String proxyJson = proxyLogVo.getProxy_json();
         proxyJson = new String(CommonUtils.decode(proxyJson));
-        Gson gson = new Gson();
-        Map<String, ProxyLogBean> proxyMap = gson.fromJson(proxyJson, new TypeToken<Map<String, ProxyLogBean>>() {}.getType());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        Map<String, ProxyLogBean> proxyMap = objectMapper.readValue(proxyJson, Map.class);
         for(Map.Entry<String, ProxyLogBean> entry  : proxyMap.entrySet()){
-            ProxyLogBean proxyLogBean = entry.getValue();
-            proxyLogBean.setCreateTime(createTime);
+            ProxyLogBean proxyLogBean = objectMapper.readValue(JSON.toJSONString(entry.getValue()), ProxyLogBean.class);
+            proxyLogBean.setCreate_time(createTime);
             proxyLogBean.setIp(ip);
-            proxyLogBean.setProxyName(entry.getKey());
+            proxyLogBean.setProxy_name(entry.getKey());
             proxyLogDAO.insert(proxyLogBean);
         }
         LOG.info("Successfully upload ip={},time={}", ip, new DateTime(createTime).toString("dd-MM-yyyy HH:mm:ss"));
+    }
+
+    @POST
+    @Path("/graph")
+    public List<ProxyLogBean> get(@QueryParam("ip") String ip,
+                               @QueryParam("name") String proxyName,
+                               @QueryParam("before") Long before,
+                               @QueryParam("after") Long after) throws Exception {
+
+        LOG.info("ip={},name={},before={},after={}",ip,proxyName,before,after);
+        if (!StringUtils.isEmpty(ip) && !StringUtils.isEmpty(proxyName)) {
+            if (before == null || after == null) {
+                after = System.currentTimeMillis()/1000;
+                before = CommonUtils.getTimesmorning();
+            }
+            LOG.info("ip={},name={},before={},after={}",ip,proxyName,before,after);
+            List<ProxyLogBean> list =  proxyLogDAO.getByNameDateIp(proxyName, ip, before, after);
+            LOG.info("result = {}",ReflectionToStringBuilder.toString(list));
+            return list;
+        }
+        throw new TeletaanInternalException(Response.Status.BAD_REQUEST, "Require  ip and proxy name in the request.");
+    }
+
+
+    @GET
+    @Path("/proxy")
+    public List<String> get(@QueryParam("ip") String ip) throws Exception {
+
+        LOG.info("ip={}",ip);
+        if (!StringUtils.isEmpty(ip)) {
+            List<String> list =  proxyLogDAO.getProxyByIp(ip);
+            LOG.info("result = {}", JSON.toJSONString(list));
+            return list;
+        }
+        throw new TeletaanInternalException(Response.Status.BAD_REQUEST, "Require  ip  in the request.");
     }
 
 }

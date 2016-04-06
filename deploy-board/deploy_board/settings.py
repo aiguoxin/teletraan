@@ -153,9 +153,9 @@ ROOT_URLCONF = 'deploy_board.urls'
 
 WSGI_APPLICATION = 'deploy_board.wsgi.application'
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-cn'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'asia/shanghai'
 
 USE_I18N = True
 

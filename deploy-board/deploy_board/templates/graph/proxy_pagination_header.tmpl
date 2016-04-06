@@ -1,0 +1,91 @@
+<div class="panel panel-default">
+    {% include "panel_heading.tmpl" with panel_title=filter_title panel_body_id="filterId" direction="right" %}
+    <div id="filterId" class="collapse out panel-body table-responsive">
+    <form action="{{ url_prefix }}/" class="form-horizontal" role="form" method="post">
+{% csrf_token %}
+        <div class="form-group">
+                <label for="before" class="deployToolTip control-label col-xs-2"
+                    data-toggle="tooltip">
+                    开始时间
+                </label>
+
+                <div class="col-xs-4">
+                    <input class="form-control" name="after" required="true"
+                           type="text" data-date-format="yyyy-mm-dd hh:ii" value="{{after}}" />
+                </div>
+
+                <label for="after" class="deployToolTip control-label col-xs-2"
+                    data-toggle="tooltip">
+                    结束时间
+                </label>
+
+                <div class="col-xs-4">
+                    <input class="form-control" name="before" required="true"
+                           type="text" value="{{before}}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ip" class="deployToolTip control-label col-xs-2"
+                    data-toggle="tooltip">
+                    ip
+                </label>
+
+                <div class="col-xs-4">
+                    <select class="form-control" name="ip" id="ip">
+                        <option value="">--请选择--</option>
+                        <option value="10.1.193.60">10.1.193.60</option>
+                        <option value="10.1.193.60">10.1.193.60</option>
+                        <option value="10.153.106.224">10.153.106.224</option>
+                    </select>
+                </div>
+                <input type='hidden' id="currentIp" value="{{ip}}">
+                <input type='hidden' id="currentProxy" value="{{name}}">
+                <label for="name" class="deployToolTip control-label col-xs-2"
+                    data-toggle="tooltip">
+                    proxy
+                </label>
+
+                <div class="col-xs-4">
+                    <select class="form-control" name="name" id="proxy">
+
+                    </select>
+                </div>
+
+            </div>
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-filter"></span> 查询
+        </button>
+    </form>
+    </div>
+</div>
+
+<script>
+    $(function(){
+    　　 currentIp = $("#currentIp").val();
+        $("#ip").val(currentIp);
+        ipVal = $("#ip").val();
+        getProxy(ipVal);
+    });
+
+
+    $("#ip").change(function() {
+         ipVal = $("#ip").val();
+         getProxy(ipVal);
+    });
+
+    function getProxy(ipVal){
+        proxySelect = $("#proxy");
+        proxySelect.empty();
+        $.ajax({
+          type: "get",
+          url: "/graph/proxy",
+          data: "ip="+ipVal
+        }).done(function(data) {
+           proxyArray = data.proxy;
+           $.each(proxyArray, function(index, value) {
+               proxySelect.append('<option value='+value+'>'+value+'</option>');
+               proxySelect.val($("#currentProxy").val())
+           });
+        });
+    }
+</script>

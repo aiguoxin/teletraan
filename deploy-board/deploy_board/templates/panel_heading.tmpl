@@ -13,6 +13,8 @@
 </div>
 <script>
     $(function () {
+        $('#' + '{{ panel_body_id }}').collapse('show')
+
         $('#' + '{{ panel_body_id }}').on('hide.bs.collapse show.bs.collapse', function () {
             $('#' + '{{ panel_body_id }}Toggler').toggleClass('glyphicon-chevron-down glyphicon-chevron-right', 100);
         });

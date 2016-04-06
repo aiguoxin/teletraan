@@ -1,0 +1,24 @@
+{% extends 'environs/envs_base.html' %}
+
+{% load utils %}
+{% load static %}
+
+{% block breadcrumb-items %}
+<ul class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li><a href="/envs">Environments</a></li>
+    <li class="active">Deployments</li>
+</ul>
+{% endblock %}
+
+{% block main %}
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h4 class="panel-title pull-left">proxy监控</h4>
+    </div>
+    <div class="panel-body table-responsive">
+        {% include "graph/proxy_pagination_header.tmpl" with url_prefix='/graph' %}
+        {% include "graph/proxy_pagination_footer.tmpl" with url_prefix='/envs/deploys' %}
+    </div>
+</div>
+{% endblock %}
