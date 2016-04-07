@@ -15,13 +15,17 @@ currentProxy = $("#currentProxy").val();
 xData = $.parseJSON($("#xData").val());
 yData = $.parseJSON($("#yData").val());
 
-lineName = "["+currentProxy+"]成功率";
+if(xData == ''){
+    $("#main").html("<div align='center'>没有查到相关数据！</div>");
+}else{
+
+lineName = currentIp+" ["+currentProxy+"] 成功率";
 
 var myChart = echarts.init(document.getElementById('main'));
 
 option = {
     title: {
-        text: '服务器:'+currentIp,
+        text: '',
         subtext: ''
     },
     tooltip: {
@@ -72,5 +76,6 @@ option = {
 };
 
 myChart.setOption(option);
+}
 
 </script>

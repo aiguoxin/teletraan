@@ -17,6 +17,7 @@
 """
 import json
 import logging
+import datetime
 from django.middleware.csrf import get_token
 
 from django.shortcuts import render
@@ -28,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 def date_to_timestamp(date):
-    result = time.strptime(date, '%Y-%m-%d')
+    result = time.strptime(date, '%Y-%m-%d %H:%M:%S')
     return int(time.mktime(result))
 
 def timestamp_to_date(timestamp):
@@ -40,18 +41,19 @@ def timestamp_to_date(timestamp):
 
 def search_page(request):
     # todo get host
-    after = "2016-04-06"
-    before = "2016-04-07"
+    today = datetime.date.today()
+    after = today.strftime('%Y-%m-%d 00:00:00')
+    before = today.strftime('%Y-%m-%d 23:59:59')
     after = request.POST.get('after', after)
     before = request.POST.get('before', before)
-    ip = request.POST.get('ip', None)
+    ip = request.POST.get('ip', '10.1.193.60')
     name = request.POST.get('name', None)
 
     # search
     xData = []
     yData = []
     params = [('ip', ip), ('after', date_to_timestamp(after)), ('before', date_to_timestamp(before)), ('name', name)]
-    if ip is not None and name is not None:
+    if ip != '' and name is not None:
         get_proxy_log = graph_helper.get_proxy_log(request, params)
         if get_proxy_log is not None:
             get_proxy_log = common.byteify(get_proxy_log)
@@ -62,9 +64,6 @@ def search_page(request):
             for proxyLog in jsonVal:
                 xData.append(timestamp_to_date(proxyLog['createTime']))
                 yData.append(proxyLog['successRate'])
-    logger.info(xData)
-    logger.info(yData)
-
     return render(request, 'graph/proxy.html',
                   {"after": after, "before": before, "ip": ip,
                    "name": name, "xData": json.dumps(xData), "yData": json.dumps(yData),

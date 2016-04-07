@@ -10,8 +10,9 @@
                 </label>
 
                 <div class="col-xs-4">
-                    <input class="form-control" name="after" required="true"
-                           type="text" data-date-format="yyyy-mm-dd hh:ii" value="{{after}}" />
+                    <input class="form-control" name="after" required="true" id="after" style="height:34px"
+                           type="text" data-date-format="yyyy-mm-dd hh:ii:ss" value="{{after}}" readonly/>
+
                 </div>
 
                 <label for="after" class="deployToolTip control-label col-xs-2"
@@ -20,8 +21,8 @@
                 </label>
 
                 <div class="col-xs-4">
-                    <input class="form-control" name="before" required="true"
-                           type="text" value="{{before}}"/>
+                    <input class="form-control" name="before" required="true" id="before" style="height:34px"
+                           type="text" data-date-format="yyyy-mm-dd hh:ii:ss" value="{{before}}" readonly/>
                 </div>
             </div>
             <div class="form-group">
@@ -34,8 +35,8 @@
                     <select class="form-control" name="ip" id="ip">
                         <option value="">--请选择--</option>
                         <option value="10.1.193.60">10.1.193.60</option>
-                        <option value="10.1.193.60">10.1.193.60</option>
-                        <option value="10.153.106.224">10.153.106.224</option>
+                        <option value="10.77.44.34">10.77.44.34</option>
+                        <option value="10.2.21.168">10.2.21.168</option>
                     </select>
                 </div>
                 <input type='hidden' id="currentIp" value="{{ip}}">
@@ -83,9 +84,15 @@
         }).done(function(data) {
            proxyArray = data.proxy;
            $.each(proxyArray, function(index, value) {
-               proxySelect.append('<option value='+value+'>'+value+'</option>');
+               proxySelect.append('<option selected="true" value='+value+'>'+value+'</option>');
                proxySelect.val($("#currentProxy").val())
            });
         });
     }
+
+
+  $('#after').datetimepicker({
+  });
+  $('#before').datetimepicker({
+  });
 </script>
