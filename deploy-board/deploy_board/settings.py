@@ -155,7 +155,7 @@ WSGI_APPLICATION = 'deploy_board.wsgi.application'
 
 LANGUAGE_CODE = 'zh-cn'
 
-TIME_ZONE = 'asia/shanghai'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 

@@ -15,6 +15,7 @@
 # -*- coding: utf-8 -*-
 """Some common functions
 """
+import json
 import logging
 from helpers import environs_helper, deploys_helper, builds_helper
 
@@ -193,13 +194,3 @@ def clone_from_stage_name(request, env_name, stage_name, from_env_name, from_sta
 
     return new_stage
 
-
-def byteify(input):
-    if isinstance(input, dict):
-        return {byteify(key): byteify(value) for key, value in input.iteritems()}
-    elif isinstance(input, list):
-        return [byteify(element) for element in input]
-    elif isinstance(input, unicode):
-        return input.encode('utf-8')
-    else:
-        return input

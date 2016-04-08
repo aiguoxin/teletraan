@@ -56,7 +56,7 @@ def search_page(request):
     if ip != '' and name is not None:
         get_proxy_log = graph_helper.get_proxy_log(request, params)
         if get_proxy_log is not None:
-            get_proxy_log = common.byteify(get_proxy_log)
+            # get_proxy_log = common.byteify(get_proxy_log)
             # parse json to map
             logger.info(get_proxy_log)
             dataDict = json.dumps(get_proxy_log)
