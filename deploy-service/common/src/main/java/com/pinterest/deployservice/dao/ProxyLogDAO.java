@@ -27,5 +27,7 @@ public interface ProxyLogDAO {
 
     List<ProxyLogBean> getByNameDateIp(String proxyName, String ip,  long before, long after) throws Exception;
 
+    List<ProxyLogBean> getByDateIp(String ip,  long before, long after) throws Exception;
+
     List<String> getProxyByIp(String ip) throws Exception;
 }

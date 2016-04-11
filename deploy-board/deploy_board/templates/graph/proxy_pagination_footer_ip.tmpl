@@ -1,0 +1,91 @@
+<div class="row" id="all_proxy">
+<input type='hidden' id="proxyDict" value="{{proxyDict}}">
+<input type='hidden' id="xData" value="{{xData}}">
+
+
+</div>
+
+
+<script>
+//all proxy graph
+$("#all_proxy").attr("style", "height:800px;");
+var legend = [];
+var series = [];
+currentIp = $("#currentIp").val();
+currentProxy = $("#currentProxy").val();
+xData = $.parseJSON($("#xData").val());
+proxyDict = $.parseJSON($("#proxyDict").val());
+$.each(proxyDict,function(key,value){
+    legend.push(key);
+    var tagData = {
+        name: key,
+        type: 'line',
+        data: value,
+        markPoint: {
+            data: [
+                {type: 'max', name: '最大值'},
+                {type : 'min', name: '最小值'}
+            ]
+        },
+        markLine: {
+            data: [
+                {type: 'average', name: '平均值'}
+            ]
+        }
+    }
+    series.push(tagData)
+});
+
+
+if(legend.length > 0){
+    var myChart = echarts.init(document.getElementById('all_proxy'));
+    option = {
+        title: {
+            text: currentIp+' 成功率',
+            subtext: '',
+            textStyle: {
+                fontSize: 10,
+                },
+            x: 'center', // 'center' | 'left' | {number},
+            y: 'top', // 'center' | 'bottom' | {number}
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:legend,
+            orient:'vertical',
+            x: 'left', // 'center' | 'left' | {number},
+            y: 'center', // 'center' | 'bottom' | {number}
+            padding: [5, 5, 5, 5],
+            left: 'center'
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {},
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            data: xData,
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} %'
+            }
+        },
+        series: series
+    };
+    myChart.setOption(option);
+}else{
+    $("#all_proxy").html("<div align='center'>没有查到相关数据！</div>");
+}
+
+</script>

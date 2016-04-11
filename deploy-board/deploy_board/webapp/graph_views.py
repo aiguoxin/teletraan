@@ -52,13 +52,15 @@ def search_page(request):
     # search
     xData = []
     yData = []
+    proxyDict = {}
     params = [('ip', ip), ('after', date_to_timestamp(after)), ('before', date_to_timestamp(before)), ('name', name)]
+
+    # get proxy
     if ip != '' and name is not None:
         get_proxy_log = graph_helper.get_proxy_log(request, params)
         if get_proxy_log is not None:
-            # get_proxy_log = common.byteify(get_proxy_log)
             # parse json to map
-            logger.info(get_proxy_log)
+            # logger.info(get_proxy_log)
             dataDict = json.dumps(get_proxy_log)
             jsonVal = json.loads(dataDict)
             for proxyLog in jsonVal:
@@ -67,6 +69,44 @@ def search_page(request):
     return render(request, 'graph/proxy.html',
                   {"after": after, "before": before, "ip": ip,
                    "name": name, "xData": json.dumps(xData), "yData": json.dumps(yData),
+                   "csrf_token": get_token(request)})
+
+
+def ip_page(request):
+    # todo get host
+    today = datetime.date.today()
+    after = today.strftime('%Y-%m-%d 00:00:00')
+    before = today.strftime('%Y-%m-%d 23:59:59')
+    after = request.POST.get('after', after)
+    before = request.POST.get('before', before)
+    ip = request.POST.get('ip', '10.1.193.60')
+    name = request.POST.get('name', None)
+
+    # search
+    count = 0
+    xData = []
+    proxyDict = {}
+    params = [('ip', ip), ('after', date_to_timestamp(after)), ('before', date_to_timestamp(before)), ('name', name)]
+    # get all proxy
+    if ip != '':
+        get_ip_log = graph_helper.get_ip_log(request, params)
+        if get_ip_log is not None:
+            # parse json to map
+            for key, val in get_ip_log.items():
+                proxyData = []
+                count += 1
+                for i, el in enumerate(val):
+                    proxyData.append(el['successRate'])
+                    # add once ok
+                    if count == 1:
+                        xData.append(timestamp_to_date(el['createTime']))
+                proxyDict[key] = proxyData
+            proxyDict = json.dumps(proxyDict, encoding="UTF-8", ensure_ascii=False)
+            logger.info(proxyDict)
+
+    return render(request, 'graph/proxy_ip.html',
+                  {"after": after, "before": before, "ip": ip,
+                   "name": name, "xData": json.dumps(xData), "proxyDict": proxyDict,
                    "csrf_token": get_token(request)})
 
 

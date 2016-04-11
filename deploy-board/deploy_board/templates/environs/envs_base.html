@@ -70,6 +70,7 @@
 {% endblock %}
 
 {% block side-panel %}
+    <!--
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         <h4 class="panel-title pull-left">Environments</h4>
@@ -93,16 +94,21 @@
         </a>
     </div>
 </div>
-
+-->
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
         <h4 class="panel-title pull-left">服务监控</h4>
     </div>
-
+    <div class="row">
+        <a href="/graph/ip" type="button" class="deployToolTip btn btn-default btn-block"
+           data-toggle="tooltip" title="List proxy graph by ip">
+            <span class="fa fa-list-ul"></span> proxy监控概况
+        </a>
+    </div>
     <div class="row">
         <a href="/graph/" type="button" class="deployToolTip btn btn-default btn-block"
            data-toggle="tooltip" title="List all the proxy graph">
-            <span class="fa fa-list-ul"></span> proxy监控
+            <span class="fa fa-list-ul"></span> 单个proxy监控
         </a>
     </div>
 </div>

@@ -38,6 +38,11 @@ public class DBProxyLogDAOImpl implements ProxyLogDAO {
             "SELECT * FROM proxy_log WHERE ip=? AND proxy_name=? AND " +
                     "create_time<=? AND create_time>=? ORDER BY create_time";
 
+    private static final String GET_PROXY_LOG_BY_IP_DATE =
+            "SELECT * FROM proxy_log WHERE ip=? AND " +
+                    "create_time<=? AND create_time>=? ORDER BY create_time";
+
+
     private static final String GET_PROXY_BY_IP =
             "SELECT proxy_name FROM proxy_log WHERE ip=? group by proxy_name";
 
@@ -62,6 +67,14 @@ public class DBProxyLogDAOImpl implements ProxyLogDAO {
         ResultSetHandler<List<ProxyLogBean>> h = new BeanListHandler<>(ProxyLogBean.class);
             return run.query(GET_PROXY_LOG_BY_NAME_IP_DATE, h, ip, proxyName, before, after);
     }
+
+    @Override
+    public List<ProxyLogBean> getByDateIp(String ip, long before, long after) throws Exception {
+        QueryRunner run = new QueryRunner(this.dataSource);
+        ResultSetHandler<List<ProxyLogBean>> h = new BeanListHandler<>(ProxyLogBean.class);
+        return run.query(GET_PROXY_LOG_BY_IP_DATE, h, ip, before, after);
+    }
+
 
     @Override
     public List<String> getProxyByIp(String ip) throws Exception {

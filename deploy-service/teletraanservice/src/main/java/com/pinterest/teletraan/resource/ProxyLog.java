@@ -18,6 +18,7 @@ import com.pinterest.teletraan.exception.TeletaanInternalException;
 import com.pinterest.teletraan.security.Authorizer;
 import com.pinterest.teletraan.vo.ProxyLogVo;
 import io.swagger.annotations.*;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -99,6 +101,32 @@ public class ProxyLog {
             List<ProxyLogBean> list =  proxyLogDAO.getByNameDateIp(proxyName, ip, before, after);
             LOG.info("result = {}",ReflectionToStringBuilder.toString(list));
             return list;
+        }
+        throw new TeletaanInternalException(Response.Status.BAD_REQUEST, "Require  ip and proxy name in the request.");
+    }
+
+
+    @POST
+    @Path("/ip")
+    public Map<String,List<ProxyLogBean>> getByIp(@QueryParam("ip") String ip,
+                                  @QueryParam("before") Long before,
+                                  @QueryParam("after") Long after) throws Exception {
+
+        Map<String,List<ProxyLogBean>> logMap = new HashMap();
+        LOG.info("ip={},name={},before={},after={}",ip,before,after);
+        if (!StringUtils.isEmpty(ip)) {
+            if (before == null || after == null) {
+                after = System.currentTimeMillis()/1000;
+                before = CommonUtils.getTimesmorning();
+            }
+            List<String> list =  proxyLogDAO.getProxyByIp(ip);
+            for(String proxyName : list){
+                List<ProxyLogBean> logList =  proxyLogDAO.getByNameDateIp(proxyName, ip, before, after);
+                if(CollectionUtils.isNotEmpty(logList)){
+                    logMap.put(proxyName,logList);
+                }
+            }
+            return logMap;
         }
         throw new TeletaanInternalException(Response.Status.BAD_REQUEST, "Require  ip and proxy name in the request.");
     }

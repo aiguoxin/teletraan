@@ -185,5 +185,6 @@ urlpatterns = [
 
     # graph
     url(r'^graph/$', graph_views.search_page),
+    url(r'^graph/ip/$', graph_views.ip_page),
     url(r'^graph/proxy$', graph_views.get_proxy),
     ]
