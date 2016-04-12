@@ -11,6 +11,8 @@ import com.pinterest.deployservice.common.CommonUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,7 +22,7 @@ public class JsonTest {
 
     public static void main(String[] args) throws IOException {
         String json =
-                "eydQbGF5SURNb2RlbEJhdGNoUHJveHknOiB7J3N1Y2Nlc3NSYXRlJzogMTAwLjAsICdzdWNjZXNzQ291bnQnOiAyMiwgJ2Vycm9yUmF0ZSc6IDAuMCwgJ3Fwcyc6IDAsICdlcnJvckNvdW50JzogMCwgJ3NhZmVNb2RlVGltZVNsb3RMZWZ0JzogMH19";
+                "MjQvMDMvMjAxNiA5OS40NSA5OS4zNCA5OC4zOCA5OS44MSA5OS42NiA5OS44NiA5OS4yMSA5OS45NCA5OS44IDk5LjU5IDk3LjgyIDk4LjU3IDk1Ljk5IDk5LjQ1IDk3LjgzIDk5LjU2IDkyLjkzIDEwMC4wIDk5LjMyIDk3Ljg=";
         json = new String(CommonUtils.decode(json));
         System.out.println(json);
 //        Gson gson = new Gson();
@@ -31,13 +33,8 @@ public class JsonTest {
 //            System.out.println(entry.getValue());
 //        }
 //        System.out.println(proxyMap.keySet());
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        Map<String, ProxyLogBean> maps = objectMapper.readValue(json, Map.class);
-        for (Map.Entry<String, ProxyLogBean> entry : maps.entrySet()) {
-            ProxyLogBean proxyLogBean = objectMapper.readValue(JSON.toJSONString(entry.getValue()), ProxyLogBean.class);
-            System.out.println(ReflectionToStringBuilder.toString(proxyLogBean));
-
-        }
+        List<String> list = Arrays.asList(json.split(" "));
+        System.out.println(list.get(1));
+        System.out.println(CommonUtils.getDayBeforeToday(7));
     }
 }

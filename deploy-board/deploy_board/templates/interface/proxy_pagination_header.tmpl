@@ -1,0 +1,99 @@
+<div class="panel panel-default">
+    {% include "panel_heading.tmpl" with panel_title=filter_title panel_body_id="filterId" direction="right" %}
+    <div id="filterId" class="collapse out panel-body table-responsive">
+    <form action="{{ url_prefix }}/" class="form-horizontal" role="form" method="post">
+{% csrf_token %}
+        <div class="form-group">
+                <label for="before" class="deployToolTip control-label col-xs-2"
+                    data-toggle="tooltip">
+                    开始时间
+                </label>
+
+                <div class="col-xs-4">
+                    <input class="form-control" name="after" required="true" id="after" style="height:34px"
+                           type="text" data-date-format="yyyy-mm-dd" value="{{after}}" readonly/>
+
+                </div>
+
+                <label for="after" class="deployToolTip control-label col-xs-2"
+                    data-toggle="tooltip">
+                    结束时间
+                </label>
+
+                <div class="col-xs-4">
+                    <input class="form-control" name="before" required="true" id="before" style="height:34px"
+                           type="text" data-date-format="yyyy-mm-dd" value="{{before}}" readonly/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="flag" class="deployToolTip control-label col-xs-2"
+                    data-toggle="tooltip">
+                    接口类型
+                </label>
+
+                <div class="col-xs-4">
+                    <select class="form-control" name="flag" id="flag">
+                        <option value="">--请选择--</option>
+                        <option value="0">国内</option>
+                        <option value="1">国外</option>
+                    </select>
+                </div>
+                <input type='hidden' id="currentIp" value="{{flag}}">
+                <input type='hidden' id="currentProxy" value="{{name}}">
+                <div style="display:{% if url_prefix == '/interface/host' %}none;{% endif %}">
+                <label for="name" class="deployToolTip control-label col-xs-2"
+                    data-toggle="tooltip">
+                    接口名
+                </label>
+
+                <div class="col-xs-4">
+                    <select class="form-control" name="name" id="proxy">
+
+                    </select>
+                </div>
+                </div>
+
+            </div>
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-filter"></span> 查询
+        </button>
+    </form>
+    </div>
+</div>
+
+<script>
+    $(function(){
+    　　 currentIp = $("#currentIp").val();
+        $("#flag").val(currentIp);
+        ipVal = $("#flag").val();
+        getProxy(ipVal);
+    });
+
+
+    $("#flag").change(function() {
+         flagVal = $("#flag").val();
+         getProxy(flagVal);
+    });
+
+    function getProxy(ipVal){
+        proxySelect = $("#proxy");
+        proxySelect.empty();
+        $.ajax({
+          type: "get",
+          url: "/interface/list",
+          data: "flag="+ipVal
+        }).done(function(data) {
+           proxyArray = data.proxy;
+           $.each(proxyArray, function(index, value) {
+               proxySelect.append('<option selected="true" value='+value+'>'+value+'</option>');
+               proxySelect.val($("#currentProxy").val())
+           });
+        });
+    }
+
+
+  $('#after').datetimepicker({
+  });
+  $('#before').datetimepicker({
+  });
+</script>

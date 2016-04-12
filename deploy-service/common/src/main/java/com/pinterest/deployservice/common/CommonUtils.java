@@ -15,11 +15,15 @@
  */
 package com.pinterest.deployservice.common;
 
+import com.amazonaws.util.StringUtils;
 import com.google.common.io.BaseEncoding;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -114,5 +118,19 @@ public class CommonUtils {
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.MILLISECOND, 0);
         return (int) (cal.getTimeInMillis()/1000);
+    }
+
+    public static String getDayBeforeToday(int day){
+        String dayStr = new DateTime().minusDays(day).toString("yyyy-mm-dd");
+        return dayStr;
+    }
+
+    public static String changeDateFromat(String dateStr){
+        if(StringUtils.isNullOrEmpty(dateStr)){
+            return "";
+        }
+        DateTimeFormatter format = DateTimeFormat.forPattern("dd/mm/yyyy");
+        DateTime dateTime = DateTime.parse(dateStr, format);
+        return dateTime.toString("yyyy-mm-dd");
     }
 }

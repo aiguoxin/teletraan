@@ -17,6 +17,7 @@ from django.conf.urls import url
 import alarm_views
 import capacity_views
 import config_map_views
+from deploy_board.webapp import interface_views
 import env_config_views
 import env_views
 import metrics_views
@@ -183,8 +184,14 @@ urlpatterns = [
     url(r'^api-docs/$', docs_views.SwaggerUIView.as_view()),
     url(r'^$', deploy_views.get_landing_page),
 
-    # graph
+    # proxy graph
     url(r'^graph/$', graph_views.search_page),
     url(r'^graph/ip/$', graph_views.ip_page),
     url(r'^graph/proxy$', graph_views.get_proxy),
+
+    # interface graph
+    url(r'^interface/$', interface_views.search_page),
+    url(r'^interface/host/$', interface_views.host_page),
+    url(r'^interface/list$', interface_views.get_interface),
+
     ]

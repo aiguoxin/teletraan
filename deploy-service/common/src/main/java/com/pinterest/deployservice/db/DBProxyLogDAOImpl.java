@@ -44,7 +44,7 @@ public class DBProxyLogDAOImpl implements ProxyLogDAO {
 
 
     private static final String GET_PROXY_BY_IP =
-            "SELECT proxy_name FROM proxy_log WHERE ip=? group by proxy_name";
+            "SELECT distinct(proxy_name) FROM proxy_log WHERE ip=?";
 
 
     private BasicDataSource dataSource;

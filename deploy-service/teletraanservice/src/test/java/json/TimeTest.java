@@ -1,6 +1,13 @@
 package json;
 
+import com.pinterest.deployservice.common.CommonUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * 16/4/5 下午6:18
@@ -10,10 +17,8 @@ import java.util.Calendar;
 public class TimeTest {
 
     public static void main(String[] args){
-        long time = System.currentTimeMillis();
-        System.out.println(time/1000);
-
-        System.out.println(getTimesmorning());
+        String dateStr = "05/04/2016";
+        System.out.println(StringUtils.isBlank(CommonUtils.changeDateFromat(dateStr)));
     }
 
     public static int getTimesmorning(){

@@ -13,11 +13,13 @@ yData = $.parseJSON($("#yData").val());
 currentIp = $("#currentIp").val();
 currentProxy = $("#currentProxy").val();
 xData = $.parseJSON($("#xData").val());
+currentIp = currentIp == 1 ? "国外":"国内";
+
 
 if(yData == ''){
     $("#main").html("<div align='center'>没有查到相关数据！</div>");
 }else{
-    lineName = currentIp+" ["+currentProxy+"] 成功率";
+    lineName = currentIp+" ["+currentProxy+"] 接口成功率";
     var myChart = echarts.init(document.getElementById('main'));
     option = {
         title: {

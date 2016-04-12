@@ -14,11 +14,11 @@
 {% block main %}
 <div class="panel panel-default">
     <div class="panel-heading clearfix">
-        <h4 class="panel-title pull-left">proxy监控->proxy监控概况</h4>
+        <h4 class="panel-title pull-left">接口成功率监控->单个接口趋势</h4>
     </div>
     <div class="panel-body table-responsive">
-        {% include "graph/proxy_pagination_header.tmpl" with url_prefix='/graph/ip'%}
-        {% include "graph/proxy_pagination_footer_ip.tmpl" with url_prefix='/envs/deploys' %}
+        {% include "interface/proxy_pagination_header.tmpl" with url_prefix='/interface' %}
+        {% include "interface/proxy_pagination_footer.tmpl" with url_prefix='/envs/deploys' %}
     </div>
 </div>
 {% endblock %}

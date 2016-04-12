@@ -82,6 +82,7 @@ public class ServiceContext {
     }
 
     private ProxyLogDAO proxyLogDAO;
+    private InterfaceInfoDAO interfaceInfoDAO;
 
     private String serviceStage;
     private MailManager mailManager;

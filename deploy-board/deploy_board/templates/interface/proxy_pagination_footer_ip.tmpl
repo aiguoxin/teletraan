@@ -8,10 +8,12 @@
 
 <script>
 //all proxy graph
-$("#all_proxy").attr("style", "height:800px;");
+$("#all_proxy").attr("style", "height:600px;");
 var legend = [];
 var series = [];
 currentIp = $("#currentIp").val();
+currentIp = currentIp == 1 ? "国外":"国内";
+
 currentProxy = $("#currentProxy").val();
 xData = $.parseJSON($("#xData").val());
 proxyDict = $.parseJSON($("#proxyDict").val());
@@ -27,11 +29,6 @@ $.each(proxyDict,function(key,value){
                 {type : 'min', name: '最小值'}
             ]
         },
-        markLine: {
-            data: [
-                {type: 'average', name: '平均值'}
-            ]
-        }
 
     }
     series.push(tagData)
@@ -42,7 +39,7 @@ if(legend.length > 0){
     var myChart = echarts.init(document.getElementById('all_proxy'));
     option = {
         title: {
-            text: currentIp+' 成功率',
+            text: currentIp+' 接口成功率',
             subtext: '',
             textStyle: {
                 fontSize: 10,
@@ -55,10 +52,7 @@ if(legend.length > 0){
         },
         legend: {
             data:legend,
-            orient:'vertical',
-            x: 'left', // 'center' | 'left' | {number},
-            y: 'center', // 'center' | 'bottom' | {number}
-            padding: [5, 5, 5, 5],
+            padding: [30, 5, 5, 5],
             left: 'center'
         },
         toolbox: {

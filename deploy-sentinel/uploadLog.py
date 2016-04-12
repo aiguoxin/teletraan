@@ -6,6 +6,9 @@ import requests
 
 __author__ = 'aiguoxin'
 
+"""
+    监控proxy代理
+"""
 
 def upload_proxy_log():
     ip = socket.gethostbyname(socket.gethostname())
