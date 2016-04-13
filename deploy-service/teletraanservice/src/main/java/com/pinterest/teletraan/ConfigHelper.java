@@ -71,6 +71,7 @@ public class ConfigHelper {
         context.setBuildDAO(new DBBuildDAOImpl(dataSource));
         context.setProxyLogDAO(new DBProxyLogDAOImpl(dataSource));
         context.setInterfaceInfoDAO(new DBInterfaceInfoDAOImpl(dataSource));
+        context.setInterfaceCodeDAO(new DBInterfaceCodeDAOImpl(dataSource));
         context.setEnvironDAO(new DBEnvironDAOImpl(dataSource));
         context.setDeployDAO(new DBDeployDAOImpl(dataSource));
         context.setHotfixDAO(new DBHotfixDAOImpl(dataSource));
