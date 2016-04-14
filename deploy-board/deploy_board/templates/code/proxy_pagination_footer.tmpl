@@ -29,13 +29,16 @@ function drawDyPie(){
     proxyDict = $.parseJSON($("#proxyDict").val());
     legend = [];
     seriesData = [];
+    length = 0;
     $.each(proxyDict,function(key,value){
-        if(key != 'all')
+        if(key != 'all'){
             legend.push(key);
-        //todo 动态替换数据
-        seriesData.push({ name: key, value: value});
+            seriesData.push({ name: key, value: value[0]});
+        }else{
+            length = value.length;
+        }
     });
-    var idx = 1;
+
     option = {
         timeline : {
             data : xData,
@@ -92,28 +95,33 @@ function drawDyPie(){
                         type:'pie',
                         center: ['50%', '45%'],
                         radius: '50%',
-                        data:[
-                            {value: 800,  name:'200'},
-                            {value: 10,  name:'499'},
-                        ]
-                    }
-                ]
-            },
-            {
-                series : [
-                    {
-                        name:'状态码',
-                        type:'pie',
-                        data:[
-                            {value: 100,  name:'200'},
-                            {value: 60,  name:'499'},
-                        ]
+                        data:seriesData
                     }
                 ]
             }
         ]
     };
-        myChart.setOption(option);
+
+    //增加series
+    for(i = 1; i < length; i++){
+        tempData = []
+        $.each(proxyDict,function(key,value){
+            if(key != 'all'){
+                tempData.push({ name: key, value: value[i]});
+            }
+        });
+        obj = {
+                series : [
+                    {
+                        name:'状态码',
+                        type:'pie',
+                        data: tempData
+                    }
+                ]
+            }
+        option['options'].push(obj);
+    }
+    myChart.setOption(option);
 }
 
 
