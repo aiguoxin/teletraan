@@ -183,7 +183,7 @@ urlpatterns = [
     url(r'^health_check/$', util_views.health_check),
     url(r'^auth/$', security.login_authorized),
     url(r'^api-docs/$', docs_views.SwaggerUIView.as_view()),
-    url(r'^$', deploy_views.get_landing_page),
+    url(r'^$', interface_views.host_page),
 
     # proxy graph
     url(r'^graph/$', graph_views.search_page),
