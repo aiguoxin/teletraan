@@ -31,6 +31,7 @@ import security
 import user_views
 import docs_views
 import graph_views
+import code_views
 
 urlpatterns = [
     # deploy related
@@ -193,5 +194,9 @@ urlpatterns = [
     url(r'^interface/$', interface_views.search_page),
     url(r'^interface/host/$', interface_views.host_page),
     url(r'^interface/list$', interface_views.get_interface),
+
+    # status code graph
+    url(r'^code/$', code_views.index_page),
+    url(r'^code/interface$', code_views.get_interface),
 
     ]

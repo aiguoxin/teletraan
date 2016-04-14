@@ -32,6 +32,7 @@ def date_to_timestamp(date):
     result = time.strptime(date, '%Y-%m-%d %H:%M:%S')
     return int(time.mktime(result))
 
+
 def timestamp_to_date(timestamp):
     if timestamp > 10000000000:
         timestamp /= 1000

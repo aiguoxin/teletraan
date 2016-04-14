@@ -12,7 +12,7 @@ $("#all_proxy").attr("style", "height:600px;");
 var legend = [];
 var series = [];
 currentIp = $("#currentIp").val();
-currentIp = currentIp == 1 ? "国外":"国内";
+currentIp = currentIp == 1 ? "海外":"国内";
 
 currentProxy = $("#currentProxy").val();
 xData = $.parseJSON($("#xData").val());
@@ -56,15 +56,26 @@ if(legend.length > 0){
             left: 'center'
         },
         toolbox: {
-            show: true,
-            feature: {
-                dataZoom: {},
-                dataView: {readOnly: false},
-                magicType: {type: ['line', 'bar']},
-                restore: {},
-                saveAsImage: {}
-            }
-        },
+               show : true,
+               feature : {
+                   mark : {show: true},
+                   dataView : {show: true, readOnly: false},
+                   magicType : {
+                       show: true,
+                       type: ['pie', 'funnel'],
+                       option: {
+                           funnel: {
+                               x: '25%',
+                               width: '50%',
+                               funnelAlign: 'left',
+                               max: 1700
+                           }
+                       }
+                   },
+                   restore : {show: true},
+                   saveAsImage : {show: true}
+               }
+           },
         xAxis:  {
             type: 'category',
             boundaryGap: false,

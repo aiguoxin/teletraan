@@ -11,7 +11,7 @@
 
                 <div class="col-xs-4">
                     <input class="form-control" name="after" required="true" id="after" style="height:34px"
-                           type="text" data-date-format="yyyy-mm-dd" value="{{after}}" readonly/>
+                           type="text" data-date-format="yyyy-mm-dd hh:ii:ss" value="{{after}}" readonly/>
 
                 </div>
 
@@ -22,28 +22,32 @@
 
                 <div class="col-xs-4">
                     <input class="form-control" name="before" required="true" id="before" style="height:34px"
-                           type="text" data-date-format="yyyy-mm-dd" value="{{before}}" readonly/>
+                           type="text" data-date-format="yyyy-mm-dd hh:ii:ss" value="{{before}}" readonly/>
                 </div>
             </div>
             <div class="form-group">
-                <label for="flag" class="deployToolTip control-label col-xs-2"
+                <label for="ip" class="deployToolTip control-label col-xs-2"
                     data-toggle="tooltip">
-                    接口类型
+                    主机
                 </label>
 
                 <div class="col-xs-4">
-                    <select class="form-control" name="flag" id="flag">
+                    <select class="form-control" name="ip" id="ip">
                         <option value="">--请选择--</option>
-                        <option value="0">国内</option>
-                        <option value="1">海外</option>
+                        <option value="10.1.193.60">测试(10.1.193.60)</option>
+                        <option value="10.153.76.87">DNS+前置机+WORKER机(10.153.76.87)</option>
+                        <option value="10.153.106.224">VIEWS(10.153.106.224)</option>
+                        <option value="10.153.126.93">VIEWS_PLT(10.153.126.93)</option>
+                        <option value="10.153.127.165">VIEWS_HOME(10.153.127.165)</option>
+                        <option value="10.153.121.51">VIEWS_FEED(10.153.121.51)</option>
                     </select>
                 </div>
-                <input type='hidden' id="currentIp" value="{{flag}}">
+                <input type='hidden' id="currentIp" value="{{ip}}">
                 <input type='hidden' id="currentProxy" value="{{name}}">
-                <div style="display:{% if url_prefix == '/interface/host' %}none;{% endif %}">
+                <div style="display:{% if url_prefix == '/graph/ip' %}none;{% endif %}">
                 <label for="name" class="deployToolTip control-label col-xs-2"
                     data-toggle="tooltip">
-                    接口名
+                    接口
                 </label>
 
                 <div class="col-xs-4">
@@ -64,15 +68,15 @@
 <script>
     $(function(){
     　　 currentIp = $("#currentIp").val();
-        $("#flag").val(currentIp);
-        ipVal = $("#flag").val();
+        $("#ip").val(currentIp);
+        ipVal = $("#ip").val();
         getProxy(ipVal);
     });
 
 
-    $("#flag").change(function() {
-         flagVal = $("#flag").val();
-         getProxy(flagVal);
+    $("#ip").change(function() {
+         ipVal = $("#ip").val();
+         getProxy(ipVal);
     });
 
     function getProxy(ipVal){
@@ -80,8 +84,8 @@
         proxySelect.empty();
         $.ajax({
           type: "get",
-          url: "/interface/list",
-          data: "flag="+ipVal
+          url: "/code/interface",
+          data: "ip="+ipVal
         }).done(function(data) {
            proxyArray = data.proxy;
            $.each(proxyArray, function(index, value) {
@@ -93,11 +97,9 @@
 
 
   $('#after').datetimepicker({
-  　　minView: "month", //选择日期后，不会再跳转去选择时分秒
-  　　autoclose:true //选择日期后自动关闭
+    　　autoclose:true //选择日期后自动关闭
   });
   $('#before').datetimepicker({
-    　　minView: "month", //选择日期后，不会再跳转去选择时分秒
-    　　autoclose:true //选择日期后自动关闭
+        autoclose:true //选择日期后自动关闭
   });
 </script>

@@ -18,7 +18,6 @@ def upload_code_log():
     f = file("/data/watchmen/query_status.json")
     proxy_json = json.dumps(json.load(f, "utf-8"), encoding="UTF-8", ensure_ascii=False)
     proxy_json = base64.b64encode(proxy_json)
-    print(proxy_json)
     proxyLogVo = {}
     upload_url = "http://localhost:8089/v1/code"
     headers = {'Content-type': 'application/json', 'Authorization': 'kIIoz6LMR_u_kc6sRx2pDg'}

@@ -36,11 +36,11 @@ public class DBInterfaceCodeDAOImpl implements InterfaceCodeDAO {
 
     private static final String GET_INTERFACE_CODE_BY_NAME_IP_DATE =
             "SELECT * FROM interface_code WHERE ip=? AND interface_name=? AND code_tag=? AND " +
-                    "create_time>=? AND create_time<=? ORDER BY create_time";
+                    "create_time<=? AND create_time>=? ORDER BY create_time";
 
     private static final String COUNT_INTERFACE_CODE_BY_NAME_IP_DATE =
             "SELECT sum(code_count) FROM interface_code WHERE ip=? AND interface_name=? AND code_tag=? AND " +
-                    "create_time>=? AND create_time<=? ORDER BY create_time";
+                    "create_time<=? AND create_time>=? ORDER BY create_time";
 
 
     private static final String GET_INTERFACE_BY_IP =

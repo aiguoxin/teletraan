@@ -153,8 +153,11 @@ public class InterfaceCode {
             LOG.info("ip={},name={},before={},after={}",ip,interfaceName,before,after);
             List<String> codeList = interfaceCodeDAO.getCodeListByIpInterface(ip, interfaceName);
             for (String codeName : codeList){
-                Double total = interfaceCodeDAO.countByNameIpTagDate(interfaceName,ip,codeName,before,after);
-                logMap.put(codeName, total);
+                //饼图去掉all
+                if(!"all".equals(codeName)){
+                    Double total = interfaceCodeDAO.countByNameIpTagDate(interfaceName,ip,codeName,before,after);
+                    logMap.put(codeName, total);
+                }
             }
             return logMap;
         }

@@ -1,0 +1,276 @@
+<input type='hidden' id="proxyDict" value="{{proxyDict}}">
+<input type='hidden' id="xData" value="{{xData}}">
+<div class="row" id="pie_graph">
+<input type='hidden' id="pieDict" value="{{pieDict}}">
+</div>
+</br>
+
+<div class="row" id="dy_pie_graph">
+</div>
+</br>
+
+<div class="row" id="all_proxy">
+
+</div>
+
+
+<script>
+
+$(function() {
+    drawLineGraph(); //折线图
+    drawPieGraph();  //饼图
+    drawDyPie();     //动态饼图
+});
+
+function drawDyPie(){
+    xData = $.parseJSON($("#xData").val());
+    $("#dy_pie_graph").attr("style", "height:300px;");
+    var myChart = echarts.init(document.getElementById('dy_pie_graph'));
+    proxyDict = $.parseJSON($("#proxyDict").val());
+    legend = [];
+    seriesData = [];
+    $.each(proxyDict,function(key,value){
+        if(key != 'all')
+            legend.push(key);
+        //todo 动态替换数据
+        seriesData.push({ name: key, value: value});
+    });
+    var idx = 1;
+    option = {
+        timeline : {
+            data : xData,
+            label : {
+                formatter : function(s) {
+                    return s;
+                    //return s.slice(0, 7);
+                }
+            }
+        },
+        options : [
+            {
+                title : {
+                    text: '状态码占比变化',
+                    textStyle: {
+                       fontSize: 10,
+                    },
+                    x: 'center', // 'center' | 'left' | {number},
+                    y: 'top', // 'center' | 'bottom' | {number}
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                legend: {
+                    data: legend,
+                    padding: [20, 5, 5, 5],
+                    left: 'center'
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {
+                            show: true,
+                            type: ['pie', 'funnel'],
+                            option: {
+                                funnel: {
+                                    x: '25%',
+                                    width: '50%',
+                                    funnelAlign: 'left',
+                                    max: 1700
+                                }
+                            }
+                        },
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                series : [
+                    {
+                        name:'状态码',
+                        type:'pie',
+                        center: ['50%', '45%'],
+                        radius: '50%',
+                        data:[
+                            {value: 800,  name:'200'},
+                            {value: 10,  name:'499'},
+                        ]
+                    }
+                ]
+            },
+            {
+                series : [
+                    {
+                        name:'状态码',
+                        type:'pie',
+                        data:[
+                            {value: 100,  name:'200'},
+                            {value: 60,  name:'499'},
+                        ]
+                    }
+                ]
+            }
+        ]
+    };
+        myChart.setOption(option);
+}
+
+
+
+function drawPieGraph(){
+    pieDict = $.parseJSON($("#pieDict").val());
+    var legend = [];
+    var seriesData = [];
+    $.each(pieDict,function(key,value){
+        legend.push(key);
+        seriesData.push({ name: key, value: value});
+    });
+
+    if(legend.length > 0){
+        $("#pie_graph").attr("style", "height:300px;");
+        var myChart = echarts.init(document.getElementById('pie_graph'));
+        option = {
+            title : {
+                text: '状态码占比',
+                textStyle: {
+                   fontSize: 10,
+                },
+                x: 'center', // 'center' | 'left' | {number},
+                y: 'top', // 'center' | 'bottom' | {number}
+            },
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                padding: [20, 5, 5, 5],
+                left: 'center',
+                data: legend
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {
+                        show: true,
+                        type: ['pie', 'funnel'],
+                        option: {
+                            funnel: {
+                                x: '25%',
+                                width: '50%',
+                                funnelAlign: 'left',
+                                max: 1700
+                            }
+                        }
+                    },
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            series : [
+                {
+                    name: '状态码',
+                    type: 'pie',
+                    radius : '50%',
+                    center: ['50%', '45%'],
+                    data: seriesData,
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    }else{
+            $("#all_proxy").html("<div align='center'>没有查到相关数据！</div>");
+    }
+}
+
+
+function drawLineGraph(){
+    //all proxy graph
+    var legend = [];
+    var series = [];
+    currentIp = $("#currentIp").val();
+    currentProxy = $("#currentProxy").val();
+    xData = $.parseJSON($("#xData").val());
+    proxyDict = $.parseJSON($("#proxyDict").val());
+    $.each(proxyDict,function(key,value){
+        legend.push(key);
+        var tagData = {
+            name: key,
+            type: 'line',
+            data: value,
+        }
+        series.push(tagData)
+    });
+
+
+    if(legend.length > 0){
+        $("#all_proxy").attr("style", "height:300px;");
+        var myChart = echarts.init(document.getElementById('all_proxy'));
+        option = {
+            title: {
+                text: '状态码趋势',
+                subtext: '',
+                textStyle: {
+                    fontSize: 10,
+                    },
+                x: 'center', // 'center' | 'left' | {number},
+                y: 'top', // 'center' | 'bottom' | {number}
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:legend,
+                padding: [30, 5, 5, 5],
+                left: 'center'
+            },
+           toolbox: {
+               show : true,
+               feature : {
+                   mark : {show: true},
+                   dataView : {show: true, readOnly: false},
+                   magicType : {
+                       show: true,
+                       type: ['pie', 'funnel'],
+                       option: {
+                           funnel: {
+                               x: '25%',
+                               width: '50%',
+                               funnelAlign: 'left',
+                               max: 1700
+                           }
+                       }
+                   },
+                   restore : {show: true},
+                   saveAsImage : {show: true}
+               }
+           },
+            xAxis:  {
+                type: 'category',
+                boundaryGap: false,
+                data: xData,
+            },
+            yAxis: {
+                type: 'value',
+                scale: true,
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            },
+            series: series
+        };
+        myChart.setOption(option);
+    }else{
+    }
+}
+
+</script>

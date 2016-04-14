@@ -13,7 +13,7 @@ yData = $.parseJSON($("#yData").val());
 currentIp = $("#currentIp").val();
 currentProxy = $("#currentProxy").val();
 xData = $.parseJSON($("#xData").val());
-currentIp = currentIp == 1 ? "国外":"国内";
+currentIp = currentIp == 1 ? "海外":"国内";
 
 
 if(yData == ''){
@@ -33,15 +33,26 @@ if(yData == ''){
             data:[lineName]
         },
         toolbox: {
-            show: true,
-            feature: {
-                dataZoom: {},
-                dataView: {readOnly: false},
-                magicType: {type: ['line', 'bar']},
-                restore: {},
-                saveAsImage: {}
-            }
-        },
+                       show : true,
+                       feature : {
+                           mark : {show: true},
+                           dataView : {show: true, readOnly: false},
+                           magicType : {
+                               show: true,
+                               type: ['pie', 'funnel'],
+                               option: {
+                                   funnel: {
+                                       x: '25%',
+                                       width: '50%',
+                                       funnelAlign: 'left',
+                                       max: 1700
+                                   }
+                               }
+                           },
+                           restore : {show: true},
+                           saveAsImage : {show: true}
+                       }
+                   },
         xAxis:  {
             type: 'category',
             boundaryGap: false,
