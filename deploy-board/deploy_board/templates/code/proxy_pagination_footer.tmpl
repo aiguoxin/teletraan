@@ -17,9 +17,14 @@
 <script>
 
 $(function() {
-    drawLineGraph(); //折线图
-    drawPieGraph();  //饼图
-    drawDyPie();     //动态饼图
+    xData = $.parseJSON($("#xData").val());
+    if(xData.length >0 ){
+        drawLineGraph(); //折线图
+        drawPieGraph();  //饼图
+        drawDyPie();     //动态饼图
+    }else{
+        $("#all_proxy").html("<div align='center'>没有查到相关数据！</div>");
+    }
 });
 
 function drawDyPie(){
