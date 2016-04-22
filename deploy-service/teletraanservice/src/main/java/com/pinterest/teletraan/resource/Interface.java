@@ -66,8 +66,8 @@ public class Interface {
             .put(15, "video")
             .put(16, "fusion")
             .put(17, "php_xyz")
-            .put(18, "views_pop")
-            .put(19, "php_st")
+            .put(18, "php_st")
+            .put(19, "views_pop")
             .put(20, "php_bus")
             .build();
 
