@@ -1,8 +1,8 @@
 <div class="panel panel-default">
-    {% include "panel_heading.tmpl" with panel_title=filter_title panel_body_id="filterId" direction="right" %}
+    {% include "panel_heading.tmpl" with panel_title=filter_title panel_body_id="filterId" direction="down" %}
     <div id="filterId" class="collapse out panel-body table-responsive">
     <form action="{{ url_prefix }}/" class="form-horizontal" role="form" method="post">
-{% csrf_token %}
+        {% csrf_token %}
         <div class="form-group">
                 <label for="before" class="deployToolTip control-label col-xs-2"
                     data-toggle="tooltip">

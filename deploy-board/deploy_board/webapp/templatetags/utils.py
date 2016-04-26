@@ -167,9 +167,9 @@ def computeElapsedTime(deploy):
 
 @register.filter("deployDurationTip")
 def deployDurationTip(deploy):
-    tip = "Deploy was started on %s(-08:00)." % convertTimestamp(deploy['startDate'])
+    tip = "Deploy was started on %s." % convertTimestamp(deploy['startDate'])
     if deploy['successDate']:
-        tip = tip + " First succeeded on %s(-08:00)." % convertTimestamp(deploy['successDate'])
+        tip = tip + " First succeeded on %s." % convertTimestamp(deploy['successDate'])
     return tip
 
 

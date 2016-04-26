@@ -189,8 +189,7 @@ class Executor(object):
     def execute_command(self, script):
         try:
             deploy_step = os.getenv('DEPLOY_STEP')
-            # script_path = self._config.get_script_directory()
-            script_path = '/data/tools/'
+            script_path = self._config.get_script_directory()
             log.info('------------script_path='+script_path)
             if not os.path.exists(script_path):
                 """if the teletraan directory does not exist in the pre stage steps. It
@@ -221,7 +220,6 @@ class Executor(object):
                     log.info('script: {} does not exist.'.format(script))
                     return DeployReport(status_code=AgentStatus.SUCCEEDED)
 
-            os.chdir("/data/tools")
             # change the mode of the script
             st = os.stat(script)
             os.chmod(script, st.st_mode | stat.S_IXUSR)

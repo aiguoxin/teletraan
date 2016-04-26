@@ -134,7 +134,7 @@ class Config(object):
         return int(self.get_var(var_name, default_value))
 
     def get_target(self):
-        target_default_dir = self.get_var("target_default_dir", "/Users/liuruixue/Downloads/jetty7/webapps")
+        target_default_dir = self.get_var("target_default_dir", "/usr/local/jetty/webapps")
         if not (self._configs and self._configs.get('target')):
             return os.path.join(target_default_dir, os.environ['ENV_NAME']+".war")
 
@@ -147,14 +147,15 @@ class Config(object):
             return os.path.join(self.get_log_directory(), "deploy_subprocess.log")
 
     def get_script_directory(self):
-        script_dir = '{}/teletraan/'.format(self.get_target())
-        subscript_dir = '{}/{}/teletraan/'.format(self.get_target(), os.environ['ENV_NAME'])
-        # subscript_dir = os.path.join(script_dir, os.environ['ENV_NAME'])
-        log.info('------------script_dir='+script_dir+',ENV_NAME='+os.environ['ENV_NAME']+',subscript_dir='+subscript_dir)
-        if os.path.exists(subscript_dir):
-            return subscript_dir
-        else:
-            return script_dir
+        # script_dir = '{}/teletraan/'.format(self.get_target())
+        # subscript_dir = '{}/{}/teletraan/'.format(self.get_target(), os.environ['ENV_NAME'])
+        # # subscript_dir = os.path.join(script_dir, os.environ['ENV_NAME'])
+        # log.info('------------script_dir='+script_dir+',ENV_NAME='+os.environ['ENV_NAME']+',subscript_dir='+subscript_dir)
+        # if os.path.exists(subscript_dir):
+        #     return subscript_dir
+        # else:
+        #     return script_dir
+        return self.get_var("script_dir", "/data/deployd")
 
     def get_agent_directory(self):
         return self.get_var("deploy_agent_dir", "/data/deployd/")
