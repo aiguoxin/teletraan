@@ -69,6 +69,12 @@ public class Interface {
             .put(18, "php_st")
             .put(19, "views_pop")
             .put(20, "php_bus")
+            .put(21, "views_home") //国内
+            .put(22, "views_playtabs")
+            .put(23, "views_group2")
+            .put(24, "views_home") //国外
+            .put(25, "views_playtabs")
+            .put(26, "views_group2")
             .build();
 
 
@@ -98,12 +104,13 @@ public class Interface {
             throw new TeletaanInternalException(Response.Status.BAD_REQUEST, "Require json in the request is wrong format.");
         }
         String day = CommonUtils.changeDateFromat(list.get(0));
+        //todo 写的比较死，有时间重构数据格式，采用json标识key和类型
         if(StringUtils.isNotBlank(day)){
             for(int i=1; i< length; i++){
                 InterfaceInfoBean interfaceInfoBean = new InterfaceInfoBean();
                 interfaceInfoBean.setCreate_time(day);
                 interfaceInfoBean.setName(interfaceMap.get(i));
-                if(i > 10){
+                if(i > 10 && i != 21 && i != 22 & i!=23){
                     interfaceInfoBean.setFlag(InterfaceInfoBean.FlagState.OVERSEA.val()); //国外接口,根据日志格式约定
                 }
                 interfaceInfoBean.setSuccess_rate(Float.valueOf(list.get(i)));
