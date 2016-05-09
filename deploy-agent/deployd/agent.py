@@ -350,6 +350,7 @@ def main():
                         help="Group name being used when interact with Teletraan service. "
                              "This is optional. By default the group name defined in host-info "
                              "file will be used")
+    # agent.conf中配置host_info是否使用
     parser.add_argument('--use-facter', dest='use_facter', action='store_true', default=False)
 
     args = parser.parse_args()

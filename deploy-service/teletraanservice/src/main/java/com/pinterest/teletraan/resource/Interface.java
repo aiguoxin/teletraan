@@ -75,6 +75,8 @@ public class Interface {
             .put(24, "views_home") //国外
             .put(25, "views_playtabs")
             .put(26, "views_group2")
+            .put(27, "views_feed")  //国内
+            .put(28, "views_feed")  //国外
             .build();
 
 
@@ -110,7 +112,7 @@ public class Interface {
                 InterfaceInfoBean interfaceInfoBean = new InterfaceInfoBean();
                 interfaceInfoBean.setCreate_time(day);
                 interfaceInfoBean.setName(interfaceMap.get(i));
-                if(i > 10 && i != 21 && i != 22 & i!=23){
+                if(isHaiwai(i)){
                     interfaceInfoBean.setFlag(InterfaceInfoBean.FlagState.OVERSEA.val()); //国外接口,根据日志格式约定
                 }
                 interfaceInfoBean.setSuccess_rate(Float.valueOf(list.get(i)));
@@ -120,6 +122,10 @@ public class Interface {
             throw new TeletaanInternalException(Response.Status.BAD_REQUEST, "Require  json data error in the request.");
         }
         LOG.info("Successfully upload json={},time={}", proxyJson, day);
+    }
+
+    private boolean isHaiwai(int i) {
+        return i > 10 && i != 21 && i != 22 & i!=23 && i!=27;
     }
 
     @POST
